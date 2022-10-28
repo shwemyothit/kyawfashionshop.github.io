@@ -431,7 +431,7 @@ img {
     grid-template-columns: repeat(2, 1fr);
     column-gap: 2rem;
     align-items: center;
-    text-align: initial;
+    text-align: center;  /* Original initial because of form */
   }
   .work__container {
     grid-template-columns: repeat(3, 1fr);
@@ -523,4 +523,8 @@ img {
 .contactus{
   color: var(--first-color);
   text-decoration: underline;
+}
+iframe{
+  width: 60%;
+  height: auto;
 }
