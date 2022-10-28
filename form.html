@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parami Pharmacy</title>
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- =====BOX ICONS===== -->
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <!--===== HEADER =====-->
+    <header class="l-header">
+        <nav class="nav bd-grid">
+            <div>
+                <a href="index.html" class="nav__logo"><span>P</span>arami <span>P</span>harmacy.</a>
+            </div>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="./index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="./home.html#about" class="nav__link">About</a></li>
+                    <li class="nav__item"><a href="./home.html#skills" class="nav__link">Skills</a></li>
+                    <li class="nav__item"><a href="./home.html#work" class="nav__link">Work</a></li>
+                    <li class="nav__item"><a href="./form.html" class="nav__link active">Form</a></li>
+                </ul>
+            </div>
+
+            <div class="nav__toggle" id="nav-toggle">
+                <i class='bx bx-menu'></i>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-5 col-md-8 mx-auto shadow border bg-white p-4 rounded">
+                <h2 class="text-center fw-bold contactus">Contact Us</h2>
+                <form name="google-sheet">
+                    <div id="form_alerts"></div>
+                    <div class="form-group md-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter  Your Name"
+                            required>
+                    </div>
+                    <div class="form-group md-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control"
+                            placeholder="Enter  Your email address" required>
+                    </div>
+                    <div class="form-group md-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea id="message" name="message" class="form-control" placeholder="Enter  Your Message"
+                            rows="5" required></textarea>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <label for="inputState" class="form-label">Choice</label>
+                        <select id="inputState" name="children" class="form-select">
+                            <option selected>Number of Children You Have</option>
+                            <option>Two</option>
+                            <option>Three</option>
+                            <option>Four</option>
+                        </select>
+                    </div>
+
+
+                    <h5>Select Your Type</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="introvert" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Introvert
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="extrovert" id="flexRadioDefault2">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Extrobert
+                        </label>
+                    </div>
+
+
+                    <div>
+                        <button class="btn btn-primary m-2" type="submit">Send Message</button>
+                        <button class="btn btn-primary" type="reset">Reset Form</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--===== FOOTER =====-->
+    <footer class="footer">
+        <p class="footer__title">ParamiPharmacy</p>
+        <div class="footer__social">
+            <a href="#" class="footer__icon"><i class='bx bxl-facebook'></i></a>
+            <a href="#" class="footer__icon"><i class='bx bxl-instagram'></i></a>
+            <a href="#" class="footer__icon"><i class='bx bxl-twitter'></i></a>
+        </div>
+        <p class="footer__copy">&#169; parami. All rigths reserved</p>
+    </footer>
+    
+    <!--===== MAIN JS =====-->
+    <script src="assets/js/main.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js">
+    </script>
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwtIZjc6b8hlswx5G3bbE4r6Kynjs226MqM9Z1l06xmWBNlAp5VyF-2W2OIK0f-pra-/exec'
+        const form = document.forms['google-sheet']
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => $("#form_alerts").html("<div class='alert alert-success'>Contact message sent successfully.</div>"))
+                .catch(error => $("#form_alerts").html("<div class='alert alert-danger'>Contact message not sent.</div>"))
+        })
+    </script>
+
+
+</body>
+
+</html>
