@@ -78,7 +78,7 @@
         <input type="number" id="fabricLength" placeholder="Enter fabric length">
 
         <label for="measurementUnit">Unit:</label>
-        <select id="measurementUnit">
+        <select id="measurementUnitprice">
             <option value="inches">လက်မ</option>
             <option value="yard" selected>ကိုက်</option>
         </select>
@@ -107,6 +107,7 @@
         function calculateCost() {
             const fabricCost = parseFloat(document.getElementById('fabricCost').value) || 0;
             const measurementUnit = document.getElementById('measurementUnit').value;
+            const measurementUnitprice = document.getElementById('measurementUnitprice').value;
             const fabricLength = parseFloat(document.getElementById('fabricLength').value) || 0;
             const sewingCost = parseFloat(document.getElementById('sewingCost').value) || 0;
             const netvalue = parseFloat(document.getElementById('netvalue').value) || 0;
@@ -115,13 +116,21 @@
 
             if (measurementUnit === 'yard') {
                 // Convert yard to inches
-                totalFabricCost = (fabricLength / 36) * fabricCost;
+                totalFabricCost = (fabricCost * 36) ;
             } else {
-                totalFabricCost = fabricLength * fabricCost;
+                totalFabricCost = fabricCost;
             }
 
-            const totalCost = totalFabricCost + sewingCost + netvalue;
-            document.getElementById('result').innerText = `စုစုပေါင်း: ${totalCost.toFixed(2)}ကျပ်`;
+            let totalFabricprice;
+
+            if (measurementUnitprice === 'yard') {
+                // Convert yard to inches
+                totalFabricprice = (fabricLength / 36) ;
+            } else {
+                totalFabricprice = fabricLength ;
+            }
+            const totalCost = (totalFabricprice * totalFabricCost )+ sewingCost + netvalue;
+            document.getElementById('result').innerText = `Kyat per Piece: ${totalCost.toFixed(2)}`;
         }
     </script>
 </body>
