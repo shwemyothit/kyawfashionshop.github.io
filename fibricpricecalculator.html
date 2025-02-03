@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabric Cost Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #1b18cf;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #555;
+            font-size: large;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        select {
+            background-color: #f9f9f9;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            font-size: 1.4em;
+            font-weight: bold;
+            text-align: center;
+            color: #007bff;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            input, select, button {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>ချူပ်ထည်တွက်ချက်ရန် Calculator</h2>
+
+        <label for="fabricLength">ပိတ်စဈေးနှုန်း</label>
+        <input type="number" id="fabricLength" placeholder="Enter fabric length">
+
+        <label for="measurementUnit">Unit:</label>
+        <select id="measurementUnitprice">
+            <option value="inches">လက်မ</option>
+            <option value="yard" selected>ကိုက်</option>
+        </select>
+
+        <label for="fabricCost">စုစုပေါင်းပိတ်စ</label>
+        <input type="number" id="fabricCost" placeholder="Enter fabric cost per piece">
+
+        <label for="measurementUnit">Unit:</label>
+        <select id="measurementUnit">
+            <option value="inches">လက်မ</option>
+            <option value="yard">ကိုက်</option>
+        </select>
+
+        <label for="sewingCost">ချုပ်ခဈေးနှုန်း</label>
+        <input type="number" id="sewingCost" placeholder="ချုပ်ခဈေးနှုန်း">
+
+        <label for="netvalue">ဘယ်လောက်ပေါင်းမှာလဲ</label>
+        <input type="number" id="netvalue" placeholder="အမြတ်တင်ရန်">
+
+        <button onclick="calculateCost()">Calculate Cost</button>
+
+        <div class="result" id="result">စုစုပေါင်းကုန်ကျငွေ: </div>
+    </div>
+
+    <script>
+        function calculateCost() {
+            const fabricCost = parseFloat(document.getElementById('fabricCost').value) || 0;
+            const measurementUnit = document.getElementById('measurementUnit').value;
+            const measurementUnitprice = document.getElementById('measurementUnitprice').value;
+            const fabricLength = parseFloat(document.getElementById('fabricLength').value) || 0;
+            const sewingCost = parseFloat(document.getElementById('sewingCost').value) || 0;
+            const netvalue = parseFloat(document.getElementById('netvalue').value) || 0;
+
+            let totalFabricCost;
+
+            if (measurementUnit === 'yard') {
+                // Convert yard to inches
+                totalFabricCost = (fabricCost * 36) ;
+            } else {
+                totalFabricCost = fabricCost;
+            }
+
+            let totalFabricprice;
+
+            if (measurementUnitprice === 'yard') {
+                // Convert yard to inches
+                totalFabricprice = (fabricLength / 36) ;
+            } else {
+                totalFabricprice = fabricLength ;
+            }
+            const totalCost = (totalFabricprice * totalFabricCost )+ sewingCost + netvalue;
+            document.getElementById('result').innerText = `Kyat per Piece: ${totalCost.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>

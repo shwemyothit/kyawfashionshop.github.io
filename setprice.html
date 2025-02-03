@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Price Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #4f46e5;
+            --background: #f8fafc;
+            --text: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #c3cfe2 0%, #f5f7fa 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .calculator-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 600px;
+            transition: transform 0.3s ease;
+        }
+
+        .calculator-container:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: var(--text);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            padding-left: 0.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        button.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        button.secondary {
+            background: #f1f5f9;
+            color: var(--text);
+            border: 2px solid #e2e8f0;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .results {
+            margin-top: 2rem;
+            background: rgba(241, 245, 249, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .result-value {
+            color: var(--text);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .fa-calculator {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .calculator-container {
+                padding: 1.5rem;
+            }
+            
+            button {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h2>
+            <i class="fas fa-calculator"></i>
+            Price Calculator
+        </h2>
+
+        <div class="input-group">
+            <label for="price">အရင်းဈေး</label>
+            <input type="number" id="price" placeholder="Enter base price">
+        </div>
+
+        <div class="input-group">
+            <label for="percent">ရာခိုင်နှုန်း</label>
+            <input type="number" id="percent" placeholder="Enter percentage">
+        </div>
+
+        <div class="input-group">
+            <label for="expectedOutput1">ရောင်းဈေး</label>
+            <input type="number" id="expectedOutput1" placeholder="Enter desired total">
+        </div>
+
+        <div class="input-group">
+            <label for="expectedOutput2">အောက်ဈေး</label>
+            <input type="number" id="expectedOutput2" placeholder="Enter unit price">
+        </div>
+
+        <div class="button-group">
+            <button class="primary" onclick="calculate()">
+                <i class="fas fa-calculate"></i>
+                Calculate
+            </button>
+            <button class="secondary" onclick="clearFields()">
+                <i class="fas fa-eraser"></i>
+                Clear
+            </button>
+        </div>
+
+        <div class="results">
+            <div class="result-item">
+                <span class="result-label">ရောင်းဈေး:</span>
+                <span class="result-value" id="output1">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">အောက်ဈေး:</span>
+                <span class="result-value" id="output2">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">အရင်းဈေး:</span>
+                <span class="result-value" id="enteredPrice">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">ရာခိုင်နှုန်း:</span>
+                <span class="result-value" id="enteredPercent">-</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keep the original JavaScript code here -->
+    <script>
+        // Original JavaScript code from previous answer
+        function calculate() {
+            let price = parseFloat(document.getElementById("price").value) || 0;
+            let percent = parseFloat(document.getElementById("percent").value) || 0;
+            let expectedOutput1 = parseFloat(document.getElementById("expectedOutput1").value);
+            let expectedOutput2 = parseFloat(document.getElementById("expectedOutput2").value);
+            
+            if (!isNaN(expectedOutput1) && price > 0) {
+                percent = ((expectedOutput1 - price) / price) * 100;
+                document.getElementById("percent").value = percent.toFixed(2);
+            }
+            
+            if (!isNaN(expectedOutput2)) {
+                price = expectedOutput2 * 200;
+                document.getElementById("price").value = price.toFixed(2);
+            }
+            
+            let output1 = price + (price * (percent / 100));
+            let output2 = price / 200;
+            
+            document.getElementById("output1").innerText = output1.toFixed(2);
+            document.getElementById("output2").innerText = output2.toFixed(2);
+            document.getElementById("enteredPrice").innerText = price.toFixed(2);
+            document.getElementById("enteredPercent").innerText = percent.toFixed(2) + "%";
+        }
+
+        function clearFields() {
+            document.getElementById("price").value = "";
+            document.getElementById("percent").value = "";
+            document.getElementById("expectedOutput1").value = "";
+            document.getElementById("expectedOutput2").value = "";
+            document.getElementById("output1").innerText = "-";
+            document.getElementById("output2").innerText = "-";
+            document.getElementById("enteredPrice").innerText = "-";
+            document.getElementById("enteredPercent").innerText = "-";
+        }
+    </script>
+</body>
+</html>
