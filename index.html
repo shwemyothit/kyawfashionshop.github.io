@@ -3,262 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- Add SHA-256 library -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
-    <title>Secure Animated Website</title>
+    <title>TikTok Style Fashion Showcase</title>
+   
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
         }
-
-        body {
-            overflow-x: hidden;
-        }
-
-        /* Intro Screen Styles */
-        #intro {
-            position: fixed;
+        .tiktok-embed {
+            max-width: 325px;
             width: 100%;
-            height: 100vh;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
             z-index: 1000;
-            transition: 1s;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .intro-content {
-            text-align: center;
-            color: white;
+        .nav-links {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
         }
 
-        .intro-content h1 {
-            font-size: 4em;
-            margin-bottom: 20px;
-            animation: fadeInUp 1s forwards;
-        }
-
-        .intro-content p {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            animation: fadeInUp 1s 0.3s forwards;
-            opacity: 0;
-        }
-
-        #getStarted {
-            padding: 15px 40px;
-            font-size: 1.2em;
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.3s;
-            animation: fadeInUp 1s 0.6s forwards;
-            opacity: 0;
-        }
-
-        #getStarted:hover {
-            background: white;
-            color: #ff6b6b;
-            transform: scale(1.05);
-        }
-
-        /* Password Input Container */
-        .password-container {
-            margin: 20px 0;
-            display: none; /* Hidden by default */
-            animation: fadeInUp 1s forwards;
-            opacity: 0;
-        }
-
-        #passwordInput {
-            padding: 12px 20px;
-            font-size: 1em;
-            border: 2px solid white;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            width: 250px;
-            margin-bottom: 15px;
-            outline: none;
-        }
-
-        #passwordInput::placeholder {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .error-message {
-            color: #ffd700;
-            display: none;
-            margin-top: 10px;
-        }
-
-        /* Home Screen Styles */
-        #home {
-            display: none;
-            opacity: 0;
-            padding: 50px 20px;
-            min-height: 100vh;
-            background: #f0eaea;
-        }
-
-        .home-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .home-content h1 {
-            font-size: 3em;
+        .nav-links a {
+            text-decoration: none;
             color: #333;
-            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+
+        /* Video Carousel */
+        .carousel-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            margin-top: 60px;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-poster {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 2;
+            transition: opacity 0.5s ease;
+        }
+
+        .video-player {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Slide Elements */
+        .slide-description {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            max-width: 80%;
             text-align: center;
+            z-index: 3;
         }
 
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        .indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 4;
         }
 
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: 0.3s;
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .button {
-            background: white;
-            padding: 3px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: 0.3s;
+
+        .indicator-dot.active {
+            background: #fff;
+            transform: scale(1.3);
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            z-index: 4;
+        }
+
+        /* Parallax Section */
+        .parallax {
+            height: 100vh;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
             align-items: center;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            justify-content: center;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .intro-content h1 {
-                font-size: 2.5em;
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #fff;
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem;
             }
 
-            .home-content h1 {
-                font-size: 2em;
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+                position: absolute;
+                right: 1rem;
+                top: 1rem;
+            }
+
+            .slide-description {
+                font-size: 0.9rem;
+                bottom: 15%;
+                padding: 0.8rem 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Intro Screen -->
-    <section id="intro">
-        <div class="intro-content">
-            <h1>Welcome to Our Platform</h1>
-            <p>Discover amazing features and services</p>
-            <button id="getStarted">Get Started</button>
-            <div class="password-container">
-                <input type="password" id="passwordInput" placeholder="Enter Access Code">
-                <p class="error-message">Invalid access code. Please try again.</p>
-            </div>
-        </div>
-    </section>
+    <!-- Navigation -->
+    <nav>
+        <div class="mobile-menu">☰</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#videos">Videos</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </nav>
 
-    <!-- Home Screen -->
-    <section id="home">
-        <div class="home-content">
-            <h1>Welcome to KyawFashion Shop</h1>
-            <div class="card-container">
-                <div class="card">
-                    <h2>ချူပ်ထည်ဈေးတွက်ရန်</h2>
-                    <p><button class="button" ><a href="./fibricpricecalculator.html">-->></a></button></p>
-                </div>
-                <div class="card">
-                    <h2>ဈေးနှုန်းကပ်ရန်</h2>
-                    <p><button class="button" ><a href="./setprice.html">--->></a></button></p>
-                </div>
+    <!-- Video Carousel -->
+    <div class="carousel-container" id="home">
+        <div class="slide-counter">1/3</div>
+        
+        <!-- Video Slides -->
+         
+        <div class="carousel-slide active">
+            <div class="video-wrapper">
+                <img src="./img/image1.jpg" class="video-poster" alt="Video Poster">
+                    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@shwenantaw27/video/7474497368700898568" data-video-id="7474497368700898568" > 
+                        <section>         
+                        </section>
+                     </blockquote>  <script async src="https://www.tiktok.com/embed.js"></script>
             </div>
+            <div class="slide-description">Winter Collection</div>
+        </div>
+
+        <div class="carousel-slide">
+            <div class="video-wrapper">
+                <img src="./img/image2.jpg" class="video-poster" alt="Video Poster">
+                    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@design.gdb/video/7473376317669461253" data-video-id="7473376317669461253" >  
+                        <section>         
+                        </section>
+                     </blockquote> <script async src="https://www.tiktok.com/embed.js"></script>
+            </div>
+            <div class="slide-description">Winter Collection</div>
+        </div>
+
+
+        <div class="carousel-slide">
+            <div class="video-wrapper">
+                <img src="./img/image3.jpg" class="video-poster" alt="Video Poster">
+                    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@shwenantaw27/video/7474497368700898568" data-video-id="7474497368700898568" > 
+                        <section>         
+                        </section>
+                     </blockquote>  <script async src="https://www.tiktok.com/embed.js"></script>
+            </div>
+            <div class="slide-description">Winter Collection</div>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="carousel-slide">
+            <div class="video-wrapper">
+                <img src="poster3.jpg" class="video-poster" alt="Video Poster">
+                <video class="video-player" muted playsinline>
+                    <source src="./vd/vd3.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="slide-description">Accessories Showcase</div>
+        </div>
+
+        <!-- Indicators -->
+        <div class="indicators"></div>
+    </div>
+
+    <!-- Parallax Sections -->
+    <div class="parallax" style="background-image: url('parallax1.jpg');">
+        <h2 style="color: #fff; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">New Arrivals</h2>
+    </div>
+
+    <section id="about" class="parallax" style="background-image: url('parallax2.jpg');">
+        <div style="background: rgba(255,255,255,0.9); padding: 2rem; border-radius: 15px;">
+            <h2>About Us</h2>
+            <p>Premium fashion experiences since 2010</p>
         </div>
     </section>
 
     <script>
-        // Password logic
-        //https://emn178.github.io/online-tools/sha256.html //change password
-        // Password security improvements
-        const correctHash = "57286a5a3f53a01ed0cd5e8e8019f93b7de4a85c56e6da7752a7d8001d3bd582"; // SHA-256 of "kfs2216089"
-        const getStartedButton = document.getElementById('getStarted');
-        const passwordContainer = document.querySelector('.password-container');
-        const passwordInput = document.getElementById('passwordInput');
-        const errorMessage = document.querySelector('.error-message');
+        // Carousel Logic
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const videos = document.querySelectorAll('.video-player');
+        const posters = document.querySelectorAll('.video-poster');
+        const indicators = document.querySelector('.indicators');
+        const counter = document.querySelector('.slide-counter');
 
-        // Step 1: Click "Get Started" to show password input
-        getStartedButton.addEventListener('click', function () {
-            // Hide the button and show the password input
-            getStartedButton.style.display = 'none';
-            passwordContainer.style.display = 'block';
-            setTimeout(() => {
-                passwordContainer.style.opacity = '1';
-                passwordInput.focus(); // Focus on the input field
-            }, 50);
+        // Create Indicators
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'indicator-dot';
+            if(index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => changeSlide(index));
+            indicators.appendChild(dot);
         });
 
-        // Step 2: Validate password on Enter key or input blur
-        passwordInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                validatePassword();
-            }
-        });
+        function changeSlide(n) {
+            // Hide current slide
+            slides[currentSlide].classList.remove('active');
+            videos[currentSlide].pause();
+            posters[currentSlide].style.opacity = 1;
 
-        passwordInput.addEventListener('blur', function () {
-            validatePassword();
-        });
-
-        // Modified validation function
-        function validatePassword() {
-            const inputHash = sha256(passwordInput.value);
+            // Show new slide
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
             
-            if (inputHash === correctHash) {
-                // Correct password flow
-                document.getElementById('intro').style.opacity = '0';
-                document.getElementById('intro').style.pointerEvents = 'none';
-                errorMessage.style.display = 'none';
+            // Start video after 1 second
+            setTimeout(() => {
+                posters[currentSlide].style.opacity = 0;
+                videos[currentSlide].play().catch(error => console.log('Autoplay blocked'));
+            }, 1000);
 
-                setTimeout(() => {
-                    document.getElementById('home').style.display = 'block';
-                    setTimeout(() => {
-                        document.getElementById('home').style.opacity = '1';
-                    }, 50);
-                }, 1000);
-            } else {
-                // Incorrect password handling
-                passwordInput.style.borderColor = '#ffd700';
-                errorMessage.style.display = 'block';
-                setTimeout(() => {
-                    passwordInput.style.borderColor = 'white';
-                }, 1000);
-            }
+            // Update UI
+            document.querySelectorAll('.indicator-dot').forEach(dot => 
+                dot.classList.remove('active'));
+            indicators.children[currentSlide].classList.add('active');
+            counter.textContent = `${currentSlide + 1}/${slides.length}`;
         }
 
+        // Auto-play and Parallax
+        window.addEventListener('load', () => {
+            // Start first video
+            setTimeout(() => {
+                posters[0].style.opacity = 0;
+                videos[0].play();
+            }, 1000);
+
+            // Auto-advance every 10 seconds
+            setInterval(() => changeSlide(currentSlide + 1), 10000);
+
+            // Parallax Effect
+            window.addEventListener('scroll', () => {
+                document.querySelectorAll('.parallax').forEach(element => {
+                    const scrolled = window.pageYOffset;
+                    element.style.backgroundPositionY = `${scrolled * 0.5}px`;
+                });
+            });
+        });
+
+        // Mobile Menu
+        document.querySelector('.mobile-menu').addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Video Click Control
+        videos.forEach(video => {
+            video.addEventListener('click', () => {
+                if(video.paused) {
+                    video.play();
+                    video.previousElementSibling.style.opacity = 0;
+                } else {
+                    video.pause();
+                    video.previousElementSibling.style.opacity = 1;
+                }
+            });
+        });
     </script>
 </body>
 </html>
